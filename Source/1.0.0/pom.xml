@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.tmkc.essentialscooldown</groupId>
+    <artifactId>EssentialsCooldown</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>EssentialsCooldown</name>
+
+    <properties>
+        <maven.compiler.release>25</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>essentialsx-releases</id>
+            <url>https://repo.essentialsx.net/releases/</url>
+        </repository>
+        <repository>
+            <id>clojars</id>
+            <url>https://repo.clojars.org/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!--
+          Compiled against the Paper API because it is the superset. The plugin
+          deliberately uses only API that exists on Bukkit/Spigot as well
+          (ChatColor, PlayerCommandPreprocessEvent, CommandMap, Permissible), so
+          the same jar runs on Bukkit, Spigot, Paper, Folia, ShreddedPaper and
+          MultiPaper. No Paper- or Adventure-only call is used at runtime.
+        -->
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>26.2.build.130-stable</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- EssentialsX API. `provided`: EssentialsX is installed on the server;
+             we must NOT bundle it inside our jar. -->
+        <dependency>
+            <groupId>net.essentialsx</groupId>
+            <artifactId>EssentialsX</artifactId>
+            <version>2.21.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--
+          MultiLib is the official MultiPaper compatibility library. It falls
+          back gracefully on Bukkit/Spigot/Paper (isMultiPaper() returns false),
+          so the same jar works everywhere. It is BUNDLED and RELOCATED below so
+          it cannot clash with another plugin's copy.
+        -->
+        <dependency>
+            <groupId>com.github.puregero</groupId>
+            <artifactId>multilib</artifactId>
+            <version>1.2.5</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>EssentialsCooldown-1.0.0</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+            </plugin>
+            <!--
+              Shade bundles MultiLib into the jar and relocates it under our own
+              package, so two plugins both using MultiLib cannot conflict.
+              outputDirectory keeps the finished jar in Compiled/<version>/.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <finalName>${project.name}-${project.version}</finalName>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.github.puregero.multilib</pattern>
+                                    <shadedPattern>com.tmkc.essentialscooldown.libs.multilib</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+              Shade writes the bundled jar to target/. Copy that finished jar into
+              Compiled/<version>/ so the required Source/Compiled layout holds.
+              Runs in the package phase, after shade.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-to-compiled</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/${project.name}-${project.version}.jar"
+                                      tofile="${project.basedir}/../../Compiled/${project.version}/${project.name}-${project.version}.jar"
+                                      overwrite="true"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

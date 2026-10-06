@@ -1,0 +1,31 @@
+name: EssentialsCooldown
+version: '1.0.0'
+main: com.tmkc.essentialscooldown.EssentialsCooldown
+# 26.2 is the Paper/Spigot API version. Bukkit/Spigot/Paper/Folia/ShreddedPaper/
+# MultiPaper all accept this; each derives from the same Bukkit API.
+api-version: '26.2'
+description: Adds configurable, rank-based cooldowns to EssentialsX commands.
+author: TMKC
+# Folia (and ShreddedPaper) only load plugins that opt in. The plugin does its
+# work on the command's own thread via a Bukkit event and holds no Bukkit state,
+# so it is safe under regionised multithreading.
+folia-supported: true
+# Soft dependencies: load after these if present, but never require them, so the
+# plugin loads on a plain Bukkit/Spigot server too.
+softdepend: [Essentials, EssentialsX, MultiPaper]
+commands:
+  essentialscooldown:
+    description: Reload the EssentialsCooldown configuration.
+    usage: /essentialscooldown reload
+    aliases: [ecool, esscool]
+    permission: essentialscooldown.admin
+# Rank permissions are DYNAMIC: every rank in a command's "cooldowns" list becomes
+# the LuckPerms node "essentialscooldown.<rank>" (e.g. essentialscooldown.hyper).
+# Only the fixed, non-rank permissions are declared here.
+permissions:
+  essentialscooldown.bypass:
+    description: Bypass all EssentialsCooldown cooldowns.
+    default: op
+  essentialscooldown.admin:
+    description: Access to /essentialscooldown reload.
+    default: op

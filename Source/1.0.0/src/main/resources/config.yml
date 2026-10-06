@@ -1,0 +1,168 @@
+# EssentialsCooldown - configuration
+#
+# ===========================================================================
+#  RANKS
+# ===========================================================================
+# Each command lists its ranks in order, MOST SPECIFIC FIRST. The first rank
+# the player holds wins, and the value next to it (in SECONDS) is their cooldown.
+#
+#   value > 0 : the player must wait this many seconds between uses
+#   value = 0 : the player CANNOT use the command at all
+#
+# The LuckPerms permission node for a rank is:
+#
+#       essentialscooldown.<rank>
+#
+# So a rank named "hyper" is granted with  essentialscooldown.hyper.
+#
+# To add a rank, copy any line inside a "cooldowns" list, rename it, and edit
+# its value. No code change or recompile is needed. Example:
+#
+#   heal:
+#     aliases: [eheal]
+#     cooldowns:
+#       - legend: 30
+#       - vip: 120
+#       - player: 300
+#
+# ===========================================================================
+#  FALLBACK RANK
+# ===========================================================================
+# "fallback-rank" is used when a player holds NONE of the rank nodes listed for
+# a command - i.e. the permission node "essentialscooldown.<rank>" is not set
+# for any of that command's ranks. Those players get the fallback rank's value.
+#
+# It must be one of the ranks you use in the commands below.
+#
+# ===========================================================================
+#  ADDING YOUR OWN COMMANDS
+# ===========================================================================
+# Any EssentialsX command can be added: copy any command block below, rename
+# the key to the command name (without the slash), and set its cooldowns.
+#
+#   spawn:
+#     aliases: []
+#     cooldowns:
+#       - player: 300
+#
+# You do NOT have to know the aliases. On startup and on /essentialscooldown
+# reload the plugin asks the server which aliases a command has and adds them
+# automatically, so a copied block cannot be dodged through an alias. Listing
+# aliases yourself is still supported and simply adds to the detected ones.
+#
+# If a command name is not recognised by the server, only the name and any
+# aliases you wrote are used, and the console says so.
+#
+# ===========================================================================
+#  ALIASES
+# ===========================================================================
+# "aliases" lists the extra command names that share the same cooldown as the
+# main command (EssentialsX aliases included so they cannot be used to dodge it).
+#
+# CROSS-SERVER (MultiPaper)
+# On a MultiPaper network, cooldowns are shared between every server and persist
+# across restarts, so a player cannot dodge a cooldown by switching servers.
+# This is automatic - no setting needed. On any other server the cooldown is
+# per-server and in-memory.
+#
+# Players with essentialscooldown.bypass ignore cooldowns entirely.
+# ===========================================================================
+
+fallback-rank: player
+
+commands:
+
+  heal:
+    aliases: [eheal]
+    cooldowns:
+      - player: 300
+
+  feed:
+    aliases: [eat, eeat, efeed]
+    cooldowns:
+      - player: 300
+
+  home:
+    aliases: [ehome, homes, ehomes]
+    cooldowns:
+      - player: 300
+
+  tpahere:
+    aliases: [etpahere]
+    cooldowns:
+      - player: 300
+
+  warp:
+    aliases: [ewarp, warps, ewarps]
+    cooldowns:
+      - player: 300
+
+  hat:
+    aliases: [ehat, head, ehead]
+    cooldowns:
+      - player: 300
+
+  enderchest:
+    aliases: [echest, eechest, eenderchest, endersee, eendersee, ec, eec]
+    cooldowns:
+      - player: 300
+
+  afk:
+    aliases: [eafk, away, eaway]
+    cooldowns:
+      - player: 300
+
+  fly:
+    aliases: [efly]
+    cooldowns:
+      - player: 300
+
+  nick:
+    aliases: [enick, nickname, enickname]
+    cooldowns:
+      - player: 300
+
+  mail:
+    aliases: [email, eemail, memo, ememo]
+    cooldowns:
+      - player: 300
+
+  give:
+    aliases: [egive]
+    cooldowns:
+      - player: 300
+
+  repair:
+    aliases: [fix, efix, erepair]
+    cooldowns:
+      - player: 300
+
+  sell:
+    aliases: [esell]
+    cooldowns:
+      - player: 300
+
+  pay:
+    aliases: [epay]
+    cooldowns:
+      - player: 300
+
+  potion:
+    aliases: [epotion, elixer, eelixer]
+    cooldowns:
+      - player: 300
+
+  firework:
+    aliases: [efirework]
+    cooldowns:
+      - player: 300
+
+  fireball:
+    aliases: [efireball, fireentity, efireentity, fireskull, efireskull]
+    cooldowns:
+      - player: 300
+
+  suicide:
+    aliases: [esuicide]
+    cooldowns:
+      - player: 300
