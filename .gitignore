@@ -1,5 +1,6 @@
-# Build output (the finished jar lives in Compiled/<version>/)
+# Build output
 target/
+Compiled/
 *.class
 
 # Editor / OS noise
