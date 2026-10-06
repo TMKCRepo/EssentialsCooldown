@@ -1,0 +1,9 @@
+# Build output (the finished jar lives in Compiled/<version>/)
+target/
+*.class
+
+# Editor / OS noise
+.idea/
+*.iml
+.vscode/
+.DS_Store
