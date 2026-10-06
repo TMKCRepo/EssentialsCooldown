@@ -22,9 +22,9 @@ Supported Server JARs
 
 
 Permissions
-- essentialscooldown.<rank> give this to the rank you want cooldowns for
-- essentialscooldown.bypass bypasses cooldowns
-- essentialscooldown.reload reloads the config
+- essentialscooldown.<rank> | give this to the rank you want cooldowns for
+- essentialscooldown.bypass | bypasses cooldowns
+- essentialscooldown.reload | reloads the config
 
 
 DISCLOSURE
